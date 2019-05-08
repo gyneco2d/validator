@@ -1,0 +1,26 @@
+{
+  "name": "@kra/validator",
+  "version": "0.1.0",
+  "description": "Validator for js",
+  "author": "kra8 <email@kra.dev> (https://github.com/kra8)",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix .",
+    "clean": "rimraf .eslintcache",
+    "clean:all": "rimraf .eslintcache node_modules",
+    "build": "parcel build src/index.js --target node",
+    "test": "mocha tests --require @babel/register"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.4",
+    "parcel-bundler": "^1.12.3",
+    "rimraf": "^2.6.3"
+  },
+  "license": "MIT"
+}
