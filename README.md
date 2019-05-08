@@ -109,11 +109,11 @@ const rules = {
 
 // [2] Define error messages
 // :attribute is validation rule key
-// :parameters is validation rules parameters
+// :value is validation rules parameter name
 const messages = {
-  required: ':attributeは必須項目です。',
+  required: ':attributeは必須項目です。', // ex: メールアドレスは必須項目です。
   email: 'メールアドレスの形式が違います。',
-  max: ':attributeの文字数は :parameters[0] 以下で入力してください。'
+  max: ':attributeの文字数は :value 以下で入力してください。' // ex: パスワードの文字数は 255 以下で入力してください。
 }
 
 // [3] Define custom attributes
