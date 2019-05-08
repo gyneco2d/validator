@@ -10,7 +10,9 @@
     "lint:fix": "eslint --cache --fix .",
     "clean": "rimraf .eslintcache",
     "clean:all": "rimraf .eslintcache node_modules",
+    "prebuild": "rimraf dist",
     "build": "parcel build src/index.js --target node",
+    "release": "yarn build && yarn publish --access public",
     "test": "mocha tests --require @babel/register"
   },
   "devDependencies": {
