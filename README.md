@@ -188,28 +188,23 @@ import TextField from '@material-ui/core/TextField'
 import makeValidate from 'path/to/makeValidate'
 
 const rules = {
-  name: 'required|max:255',
   email: 'required|email|max:255',
-  password: 'required|between:5,255',
-  confirmation: 'required|confirmed:password|between:5,255'
+  password: 'required|between:5,255'
 }
 
 const messages = {
   required: ':attributeは必須項目です',
   email: ':attributeの形式が違います',
   max: ':attributeの文字数は:value文字以下で入力してください',
-  between: ':min文字以上、:max文字以下で入力して下さい',
-  confirmed: 'パスワードと異なります'
+  between: ':min文字以上、:max文字以下で入力して下さい'
 }
 
 const attributes = {
-  name: '塾名',
   email: 'メールアドレス',
   password: 'パスワード'
 }
 
 const useValidate = makeValidate(rules, { messages, attributes })
-
 
 const SimpleForm = props => {
   const [errors, validate] = useValidate()
