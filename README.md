@@ -1,4 +1,4 @@
-# Validator for React
+# Validator for JavaScript
 
 version 0.1.0
 
