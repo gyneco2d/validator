@@ -2,6 +2,11 @@
 
 version 0.1.0
 
+# Install
+``` sh
+$ yarn add @kra/validator
+```
+
 ## Guide
 ``` jsx
 import Validator from '@kra/validator'
