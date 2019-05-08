@@ -2,6 +2,7 @@
   "name": "@kra/validator",
   "version": "0.1.0",
   "description": "Validator for js",
+  "keywords": ["validator", "javascript"],
   "author": "kra8 <email@kra.dev> (https://github.com/kra8)",
   "main": "dist/index.js",
   "scripts": {
@@ -22,5 +23,6 @@
     "parcel-bundler": "^1.12.3",
     "rimraf": "^2.6.3"
   },
+  "repository": "https://github.com/kra8/validator",
   "license": "MIT"
 }
