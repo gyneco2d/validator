@@ -1,6 +1,6 @@
 {
   "name": "@kra/validator",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Validator for js",
   "keywords": ["validator", "javascript"],
   "author": "kra8 <email@kra.dev> (https://github.com/kra8)",
@@ -11,7 +11,7 @@
     "clean": "rimraf .eslintcache",
     "clean:all": "rimraf .eslintcache node_modules",
     "prebuild": "rimraf dist",
-    "build": "parcel build src/index.js --target node",
+    "build": "parcel build src/index.js --target node --no-source-maps",
     "release": "yarn build && yarn publish --access public",
     "test": "mocha tests --require @babel/register"
   },

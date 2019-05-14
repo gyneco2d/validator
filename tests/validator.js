@@ -99,4 +99,18 @@ describe('validator tests', () => {
 
     assert.isTrue(!validator.hasErrors())
   })
+
+  it('work nullable validate', () => {
+    const rules = { email: 'email|max:20' }
+    const validator = new Validator(rules)
+
+    validator.validate('email', '')
+    assert.isFalse(validator.hasErrors())
+
+    validator.validate('email', 'hoge@sample.jp')
+    assert.isFalse(validator.hasErrors())
+
+    validator.validate('email', '@sample.jp')
+    assert.isTrue(validator.hasErrors())
+  })
 })

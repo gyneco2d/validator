@@ -65,7 +65,7 @@ class Validator {
     this.passes[attribute] = true
 
     this.getRule(attribute).constraints.forEach(constraint => {
-      if (!this.errors[attribute] && !constraint.valid(input, this)) {
+      if (!this.errors[attribute] && !constraint.prevalid(input, attribute, this)) {
         this.errors[attribute] = {
           attribute   : attribute,
           constraint  : constraint.name,
