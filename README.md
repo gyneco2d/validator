@@ -164,7 +164,7 @@ Make hooks
 ex:makeValidate.js
 ``` js
 import { useState } from 'react'
-import Validator from '@samsy/validator'
+import Validator from '@kra/validator'
 
 const makeValidate = (rules, options) => {
   const validator = new Validator(rules, options)
