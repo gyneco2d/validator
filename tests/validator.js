@@ -2,7 +2,7 @@
 import { assert } from 'chai'
 import Validator from '../src'
 
-describe('validator tests', () => {
+describe('Validator tests', () => {
   const rules = {
     email: 'required|email|max:20',
     password: 'required|max:255',
@@ -12,7 +12,7 @@ describe('validator tests', () => {
   const messages = {
     required: ':attribute は必須項目です。',
     email: 'メールアドレスの形式が違います。',
-    max: ':attribute の文字数は :max 以下で入力してください。',
+    max: ':attribute の文字数は :value 以下で入力してください。',
     regex: ':attribute は 000-0000 の形式で入力してください。'
   }
 
@@ -22,51 +22,138 @@ describe('validator tests', () => {
     assert.isOk(validator)
   })
 
-  it('work email validate', () => {
-    const validator = new Validator(rules, { messages })
-
-    validator.validate('email', 'sample@email.com')
-    assert.isUndefined(validator.getError('email'))
-
-    validator.validate('email', 'sample')
-    assert.hasAllKeys(
-      validator.getError('email'),
-      ['attribute', 'constraint', 'message', 'parameters', 'value']
-    )
+  describe('email', () => {
+    it('work email validate', () => {
+      const validator = new Validator(rules, { messages })
+  
+      validator.validate('email', 'sample@email.com')
+      assert.isUndefined(validator.getError('email'))
+  
+      validator.validate('email', 'sample')
+      assert.hasAllKeys(
+        validator.getError('email'),
+        ['attribute', 'constraint', 'message', 'parameters', 'value']
+      )
+    })
+  
+    it('error messages', () => {
+      const validator = new Validator(rules, { messages })
+  
+      validator.validate('email', '')
+      assert.equal(
+        validator.getError('email').message,
+        'email は必須項目です。'
+      )
+  
+      validator.validate('email', 'sample')
+      assert.equal(
+        validator.getError('email').message,
+        'メールアドレスの形式が違います。'
+      )
+  
+      validator.validate('email', 'testingtoolongemail@email.com')
+      assert.equal(
+        validator.getError('email').message,
+        'email の文字数は 20 以下で入力してください。'
+      )
+    })
   })
 
-  it('work password confirmation validate', () => {
-    const validator = new Validator({
-      password: 'required|max:255',
-      confirmPassword: 'required|confirmed:password|max:255',
-    },
-    {
-      attributes: {
-        confirmPassword: 'ほげ',
-        password: 'パスワード'
-      }
+  describe('password', () => {
+    it('work password confirmation validate', () => {
+      const validator = new Validator({
+        password: 'required|max:255',
+        confirmPassword: 'required|confirmed:password|max:255',
+      },
+      {
+        attributes: {
+          password: 'パスワード',
+          confirmPassword: 'ほげ'
+        }
+      })
+
+      validator.validate('password', 'pass')
+      validator.validate('confirmPassword', 'pass')
+      assert.isUndefined(validator.getError('confirmPassword'))
+  
+      validator.validate('password', 'sample@emaia.com')
+      validator.validate('confirmPassword', 'sample@email.com')
+      assert.hasAllKeys(
+        validator.getError('confirmPassword'),
+        ['attribute', 'constraint', 'message', 'parameters', 'value']
+      )
     })
 
-    validator.validate('password', 'sample@emaia.com')
-    validator.validate('confirmPassword', 'sample@email.com')
-    assert.hasAllKeys(
-      validator.getError('confirmPassword'),
-      ['attribute', 'constraint', 'message', 'parameters', 'value']
-    )
+    it('error messages', () => {
+      const validator = new Validator({
+        password: 'required|max:255',
+        confirmPassword: 'required|confirmed:パスワード|max:255'
+      },
+      {
+        attributes: {
+          password: 'パスワード',
+          confirmPassword: 'パスワード（確認用）'
+        },
+        messages: {
+          required: ':attribute は必須項目です。',
+          confirmed: ':attribute と :field が異なります。'
+        }
+      })
 
-    assert.include(validator.getError('confirmPassword').message, 'パスワード')
+      validator.validate('password', '')
+      validator.validate('confirmPassword', '')
+      assert.equal(
+        validator.getError('password').message,
+        'パスワード は必須項目です。'
+      )
+      assert.equal(
+        validator.getError('confirmPassword').message,
+        'パスワード（確認用） は必須項目です。'
+      )
+
+      validator.validate('password', 'pass')
+      validator.validate('confirmPassword', 'diff')
+      assert.equal(
+        validator.getError('confirmPassword').message,
+        'パスワード（確認用） と パスワード が異なります。'
+      )
+    })
   })
 
-  it('work regex validate', () => {
-    const validator = new Validator(rules, { messages })
-    validator.validate('postcode', '123-000')
-    assert.hasAllKeys(
-      validator.getError('postcode'),
-      ['attribute', 'constraint', 'message', 'parameters', 'value']
-    )
+  describe('postcode', () => {
+    it('work regex validate', () => {
+      const validator = new Validator(rules, { messages })
+  
+      validator.validate('postcode', '')
+      assert.isUndefined(validator.getError('postcode'))
 
-    validator.validate('postcode', '123-1234')
-    assert.isUndefined(validator.getError('postcode'))
+      validator.validate('postcode', '123-1234')
+      assert.isUndefined(validator.getError('postcode'))
+  
+      validator.validate('postcode', '123-000')
+      assert.hasAllKeys(
+        validator.getError('postcode'),
+        ['attribute', 'constraint', 'message', 'parameters', 'value']
+      )
+    })
+
+    it('error messages', () => {
+      const validator = new Validator(
+        rules,
+        {
+          attributes: {
+            postcode: '郵便場号'
+          },
+          messages
+        }
+      )
+
+      validator.validate('postcode', '123-000')
+      assert.equal(
+        validator.getError('postcode').message,
+        '郵便場号 は 000-0000 の形式で入力してください。'
+      )
+    })
   })
 
   it('shoule be left the rule priority when multiple invalid.', () => {
